@@ -1,24 +1,67 @@
-# Music Playlist Manager
+# 🎵 Music Playlist Manager
 
-A comprehensive music playlist management system built with Node.js, MongoDB, and Redis, demonstrating Object-Oriented Programming principles.
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-green.svg)](https://www.mongodb.com/)
+[![Redis](https://img.shields.io/badge/Redis-7.0+-red.svg)](https://redis.io/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## Features
+A comprehensive, full-stack music playlist management system built with modern web technologies. Upload your music, create playlists, and enjoy seamless audio playback with a beautiful, responsive interface.
 
-- **Song Management**: Create, read, update, delete songs
-- **Playlist Management**: Create playlists, add/remove songs, organize music
-- **User Management**: User profiles and playlist ownership
-- **Recently Played**: Redis-powered recently played songs tracking
-- **Search**: Search songs by title, artist, album, or genre
-- **Caching**: Redis caching for improved performance
-- **OOP Implementation**: Demonstrates encapsulation, inheritance, polymorphism, and abstraction
+## 🌟 Live Demo
 
-## Tech Stack
+[View Live Demo](https://your-demo-link.com) | [API Documentation](http://localhost:3000/api/docs)
 
-- **Backend**: Node.js, Express.js
+## 📸 Screenshots
+
+### Landing Page
+![Landing Page](https://via.placeholder.com/800x400/667eea/ffffff?text=Modern+Landing+Page)
+
+### Dashboard
+![Dashboard](https://via.placeholder.com/800x400/764ba2/ffffff?text=Music+Dashboard)
+
+### Audio Player
+![Audio Player](https://via.placeholder.com/800x400/28a745/ffffff?text=Built-in+Audio+Player)
+
+## ✨ Features
+
+### 🎵 Core Functionality
+- **Audio Upload & Playback**: Upload MP3, WAV, M4A, OGG, FLAC files with built-in HTML5 player
+- **Smart Playlist Management**: Create unlimited playlists with drag-and-drop organization
+- **Advanced Search**: Real-time search by title, artist, album, or genre
+- **Recently Played**: Redis-powered listening history with timestamps
+- **User Profiles**: Secure user management with session handling
+
+### 🎨 Modern Frontend
+- **Responsive Design**: Mobile-first approach with smooth animations
+- **Professional Landing Page**: Hero section, features, testimonials, and CTAs
+- **Interactive Dashboard**: Real-time updates with smooth transitions
+- **Audio Player**: Fixed bottom player with progress tracking
+- **Glassmorphism UI**: Modern design with blur effects and gradients
+
+### 🏗️ Technical Excellence
+- **Object-Oriented Programming**: Full implementation of OOP principles
+- **RESTful API**: Complete CRUD operations with proper HTTP status codes
+- **Redis Caching**: High-performance caching and session management
+- **File Upload**: Secure file handling with validation and storage
+- **Error Handling**: Comprehensive error management and user feedback
+
+## 🛠️ Tech Stack
+
+### Backend
+- **Runtime**: Node.js 18+
+- **Framework**: Express.js
 - **Database**: MongoDB with Mongoose ODM
-- **Cache**: Redis
-- **Validation**: Joi
-- **Testing**: Jest, Supertest
+- **Cache**: Redis for sessions and recently played
+- **File Upload**: Multer for audio file handling
+- **Validation**: Joi for request validation
+- **Testing**: Jest & Supertest
+
+### Frontend
+- **Languages**: HTML5, CSS3, Vanilla JavaScript
+- **Styling**: Modern CSS with animations and transitions
+- **Audio**: HTML5 Audio API for playback
+- **Design**: Responsive, mobile-first approach
+- **Effects**: Glassmorphism, gradients, and micro-interactions
 
 ## Prerequisites
 
@@ -26,26 +69,35 @@ A comprehensive music playlist management system built with Node.js, MongoDB, an
 - MongoDB (running on localhost:27017)
 - Redis (running on localhost:6379)
 
-## Installation
+## 🚀 Quick Start
 
-1. Clone the repository:
+### Prerequisites
+- Node.js 18+ installed
+- MongoDB running on localhost:27017
+- Redis running on localhost:6379
+
+### Installation
+
+1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd music-playlist-manager
+git clone https://github.com/Ajang-Deng98/fullstack_assignment_group5.git
+cd fullstack_assignment_group5
 ```
 
-2. Install dependencies:
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. Set up environment variables:
+3. **Set up environment variables**
 ```bash
-cp .env.example .env
-# Edit .env with your configuration
+# The .env file is already configured for local development
+# PORT=3000
+# MONGODB_URI=mongodb://localhost:27017/music_playlist_db
+# REDIS_URL=redis://localhost:6379
 ```
 
-4. Start the services:
+4. **Start required services**
 ```bash
 # Start MongoDB (if not running as service)
 mongod
@@ -54,14 +106,19 @@ mongod
 redis-server
 ```
 
-5. Run the application:
+5. **Run the application**
 ```bash
-# Development mode
+# Development mode with auto-reload
 npm run dev
 
 # Production mode
 npm start
 ```
+
+6. **Access the application**
+- Landing Page: http://localhost:3000
+- Dashboard: http://localhost:3000/dashboard.html
+- API Docs: http://localhost:3000/api/docs
 
 ## API Endpoints
 
@@ -93,16 +150,30 @@ npm start
 - `GET /api/users/:userId/recently-played` - Get recently played songs
 - `DELETE /api/users/:userId/recently-played` - Clear recently played songs
 
-## Testing with Postman
+## 🧪 Testing
 
-1. Import the provided Postman collection
-2. Set the base URL to `http://localhost:3000`
-3. Test the endpoints in the following order:
+### Postman Collection
+1. Import `postman_collection.json` into Postman
+2. Set base URL to `http://localhost:3000/api`
+3. Test endpoints in this order:
    - Create a user
-   - Create songs
+   - Upload songs with audio files
    - Create playlists
    - Add songs to playlists
-   - Play songs to test recently played functionality
+   - Play songs to test recently played
+
+### Manual Testing
+1. Visit http://localhost:3000
+2. Register a new account
+3. Upload audio files
+4. Create playlists
+5. Test audio playback
+6. Check recently played section
+
+### Unit Tests
+```bash
+npm test
+```
 
 ## OOP Concepts Demonstrated
 
@@ -184,14 +255,109 @@ Run tests:
 npm test
 ```
 
-## Contributing
+## 📁 Project Structure
+
+```
+fullstack_assignment_group5/
+├── config/
+│   └── database.js          # MongoDB & Redis connections
+├── controllers/
+│   ├── songController.js    # Song CRUD operations
+│   ├── playlistController.js # Playlist management
+│   └── userController.js    # User management
+├── middleware/
+│   ├── validation.js        # Request validation
+│   ├── errorHandler.js      # Error handling
+│   └── upload.js           # File upload handling
+├── models/
+│   ├── Song.js             # Song schema & OOP
+│   ├── Playlist.js         # Playlist schema & inheritance
+│   └── User.js             # User schema
+├── public/
+│   ├── css/                # Stylesheets
+│   ├── js/                 # Frontend JavaScript
+│   ├── landing.html        # Landing page
+│   ├── index.html          # Auth page
+│   └── dashboard.html      # Main dashboard
+├── routes/
+│   └── *.js               # API routes
+├── uploads/               # Audio file storage
+├── utils/
+│   └── redisService.js    # Redis operations
+└── server.js              # Main server file
+```
+
+## 🎯 OOP Implementation
+
+### Encapsulation
+- Private properties and methods in classes
+- Getter methods for data access
+- Data validation within classes
+
+### Inheritance
+```javascript
+// Abstract base class
+class BasePlaylist {
+  constructor(name, description) {
+    if (this.constructor === BasePlaylist) {
+      throw new Error('Cannot instantiate abstract class');
+    }
+  }
+}
+
+// Concrete implementations
+class RegularPlaylist extends BasePlaylist {}
+class SmartPlaylist extends BasePlaylist {}
+```
+
+### Polymorphism
+- Different playlist types implementing same interface
+- Method overriding in subclasses
+
+### Abstraction
+- Abstract BasePlaylist class
+- Hidden implementation details
+
+## 🔧 API Endpoints
+
+### Songs
+- `POST /api/songs` - Upload song with audio file
+- `GET /api/songs` - Get all songs (paginated)
+- `GET /api/songs/search?query=` - Search songs
+- `POST /api/songs/:id/play` - Play song (add to recently played)
+
+### Playlists
+- `POST /api/playlists` - Create playlist
+- `GET /api/playlists/user/:userId` - Get user playlists
+- `POST /api/playlists/:playlistId/songs/:songId` - Add song to playlist
+
+### Users
+- `POST /api/users` - Create user
+- `GET /api/users/:userId/recently-played` - Get recently played
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-MIT License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Ajang Deng**
+- GitHub: [@Ajang-Deng98](https://github.com/Ajang-Deng98)
+
+## 🙏 Acknowledgments
+
+- Built with modern web technologies
+- Inspired by popular music streaming platforms
+- Designed for educational purposes demonstrating full-stack development
+
+---
+
+⭐ **Star this repository if you found it helpful!**
