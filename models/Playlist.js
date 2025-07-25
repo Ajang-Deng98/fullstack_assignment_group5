@@ -43,8 +43,26 @@ class RegularPlaylist extends BasePlaylist {
     this.isPublic = false;
   }
 
+  getName() {
+    return this.name;
+  }
+
+  getDescription() {
+    return this.description;
+  }
+
+  getType() {
+    return 'regular';
+  }
+
   getPlaylistType() {
     return 'regular';
+  }
+
+  validate() {
+    if (!this.name) {
+      throw new Error('Playlist name is required');
+    }
   }
 
   makePublic() {
@@ -64,8 +82,30 @@ class SmartPlaylist extends BasePlaylist {
     this.criteria = criteria; // e.g., genre, artist, etc.
   }
 
+  getName() {
+    return this.name;
+  }
+
+  getDescription() {
+    return this.description;
+  }
+
+  getType() {
+    return 'smart';
+  }
+
+  getCriteria() {
+    return this.criteria;
+  }
+
   getPlaylistType() {
     return 'smart';
+  }
+
+  validate() {
+    if (!this.name) {
+      throw new Error('Playlist name is required');
+    }
   }
 
   updateCriteria(newCriteria) {

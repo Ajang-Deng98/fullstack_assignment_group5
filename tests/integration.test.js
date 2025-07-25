@@ -1,5 +1,6 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
+process.env.NODE_ENV = 'test';
 const app = require('../server');
 const { UserModel } = require('../models/User');
 const { SongModel } = require('../models/Song');
