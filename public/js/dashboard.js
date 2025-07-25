@@ -5,6 +5,23 @@ let playlists = [];
 let currentPlaylist = null;
 let selectedSongs = new Set();
 
+// Get auth headers
+function getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : ''
+    };
+}
+
+// Get auth headers for FormData
+function getAuthHeadersFormData() {
+    const token = localStorage.getItem('token');
+    return {
+        'Authorization': token ? `Bearer ${token}` : ''
+    };
+}
+
 // Check authentication
 const userData = localStorage.getItem('currentUser');
 if (!userData) {
@@ -147,7 +164,10 @@ function displaySongs(songsToShow) {
             <div class="song-artist">by ${song.artist}</div>
             <div class="song-info">
                 <span>${song.album || 'Unknown Album'} • ${formatDuration(song.duration)}</span>
-                <button class="play-btn" onclick="playSong('${song._id}', '${song.filePath || ''}')">▶ Play</button>
+                <div class="song-actions">
+                    <button class="play-btn" onclick="playSong('${song._id}', '${song.filePath || ''}')">▶ Play</button>
+                    <button class="delete-btn" onclick="deleteSong('${song._id}')">🗑</button>
+                </div>
             </div>
         `;
         container.appendChild(songCard);
@@ -166,25 +186,19 @@ function searchSongs() {
 
 async function playSong(songId, filePath) {
     try {
-        console.log('Playing song:', { songId, userId: currentUser._id });
-        
         const response = await fetch(`${API_BASE}/songs/${songId}/play`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userId: currentUser._id })
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ userId: currentUser.id })
         });
         
         const result = await response.json();
-        console.log('Play song result:', result);
         
         if (result.success) {
             if (filePath && filePath !== 'null' && filePath !== 'undefined') {
                 playAudioFile(filePath, result.data.title, result.data.artist);
             }
             showMessage('Song played!', 'success');
-            // Reload recently played after a short delay
             setTimeout(() => {
                 loadRecentlyPlayed();
             }, 500);
@@ -192,7 +206,6 @@ async function playSong(songId, filePath) {
             showMessage(result.message || 'Failed to play song');
         }
     } catch (error) {
-        console.error('Play song error:', error);
         showMessage('Failed to play song');
     }
 }
@@ -256,6 +269,7 @@ async function addSong(event) {
     try {
         const response = await fetch(`${API_BASE}/songs`, {
             method: 'POST',
+            headers: getAuthHeadersFormData(),
             body: formData
         });
         
@@ -276,18 +290,33 @@ async function addSong(event) {
 // Playlists functionality
 async function loadPlaylists() {
     try {
-        const response = await fetch(`${API_BASE}/playlists/user/${currentUser._id}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const result = await response.json();
+        // Load user's own playlists and public playlists
+        const [userResponse, publicResponse] = await Promise.all([
+            fetch(`${API_BASE}/playlists/user/${currentUser.id}`),
+            fetch(`${API_BASE}/playlists/public`)
+        ]);
         
-        if (result.success) {
-            playlists = result.data;
-            displayPlaylists(playlists);
-        } else {
-            displayPlaylists([]);
+        const userResult = await userResponse.json();
+        const publicResult = await publicResponse.json();
+        
+        let allPlaylists = [];
+        
+        // Add user's own playlists
+        if (userResult.success) {
+            allPlaylists = [...userResult.data];
         }
+        
+        // Add public playlists from other users (avoid duplicates)
+        if (publicResult.success) {
+            const publicPlaylists = publicResult.data.filter(playlist => 
+                playlist.userId !== currentUser.id
+            );
+            allPlaylists = [...allPlaylists, ...publicPlaylists];
+        }
+        
+        playlists = allPlaylists;
+        displayPlaylists(playlists);
+        
     } catch (error) {
         console.error('Load playlists error:', error);
         displayPlaylists([]);
@@ -305,16 +334,30 @@ function displayPlaylists(playlistsToShow) {
     }
     
     playlistsToShow.forEach(playlist => {
+        const isOwner = playlist.userId === currentUser.id;
         const playlistCard = document.createElement('div');
         playlistCard.className = 'playlist-card';
-        playlistCard.style.cursor = 'pointer';
-        playlistCard.onclick = () => showPlaylistDetails(playlist);
+        
+        const actionsHtml = isOwner ? `
+            <div class="playlist-actions">
+                <button class="edit-btn" onclick="showEditPlaylistModal('${playlist._id}', '${playlist.name}', '${playlist.description || ''}', ${playlist.isPublic})">✏</button>
+                <button class="delete-btn" onclick="deletePlaylist('${playlist._id}')">🗑</button>
+            </div>
+        ` : '';
+        
+        const ownerInfo = !isOwner && playlist.userId ? `<div class="playlist-owner">by ${playlist.userId}</div>` : '';
+        
         playlistCard.innerHTML = `
-            <div class="playlist-title">${playlist.name}</div>
+            <div class="playlist-header">
+                <div class="playlist-title" onclick="showPlaylistDetails(${JSON.stringify(playlist).replace(/"/g, '&quot;')})" style="cursor: pointer;">${playlist.name}</div>
+                ${actionsHtml}
+            </div>
             <div class="playlist-desc">${playlist.description || 'No description'}</div>
+            ${ownerInfo}
             <div class="playlist-info">
                 <span>${playlist.songs.length} songs</span>
                 <span>${playlist.isPublic ? '🌐 Public' : '🔒 Private'}</span>
+                ${isOwner ? '<span class="owner-badge">👤 Your playlist</span>' : ''}
             </div>
         `;
         container.appendChild(playlistCard);
@@ -331,16 +374,14 @@ async function addPlaylist(event) {
     const playlistData = {
         name: document.getElementById('playlistName').value,
         description: document.getElementById('playlistDesc').value,
-        userId: currentUser._id,
+        userId: currentUser.id,
         isPublic: document.getElementById('playlistPublic').checked
     };
     
     try {
         const response = await fetch(`${API_BASE}/playlists`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify(playlistData)
         });
         
@@ -361,7 +402,7 @@ async function addPlaylist(event) {
 // Recently played functionality
 async function loadRecentlyPlayed() {
     try {
-        const response = await fetch(`${API_BASE}/users/${currentUser._id}/recently-played`);
+        const response = await fetch(`${API_BASE}/users/${currentUser.id}/recently-played`);
         const result = await response.json();
         
         if (result.success) {
@@ -435,17 +476,24 @@ function closeModal(modalId) {
 
 async function showPlaylistDetails(playlist) {
     currentPlaylist = playlist;
+    const isOwner = playlist.userId === currentUser.id;
+    
     document.getElementById('playlistsList').classList.add('hidden');
     document.getElementById('playlistDetails').classList.remove('hidden');
     document.getElementById('playlistDetailsTitle').textContent = playlist.name;
     
-    // Load playlist songs
+    // Hide/show Add Songs button based on ownership
+    const addSongsBtn = document.querySelector('#playlistDetails .add-btn');
+    if (addSongsBtn) {
+        addSongsBtn.style.display = isOwner ? 'flex' : 'none';
+    }
+    
     try {
         const response = await fetch(`${API_BASE}/playlists/${playlist._id}`);
         const result = await response.json();
         
         if (result.success) {
-            displayPlaylistSongs(result.data.songs);
+            displayPlaylistSongs(result.data.songs || [], isOwner);
         }
     } catch (error) {
         showMessage('Failed to load playlist songs');
@@ -458,7 +506,7 @@ function hidePlaylistDetails() {
     currentPlaylist = null;
 }
 
-function displayPlaylistSongs(playlistSongs) {
+function displayPlaylistSongs(playlistSongs, isOwner = true) {
     const container = document.getElementById('playlistSongs');
     container.innerHTML = '';
     
@@ -470,6 +518,10 @@ function displayPlaylistSongs(playlistSongs) {
     playlistSongs.forEach(song => {
         const songItem = document.createElement('div');
         songItem.className = 'recent-item';
+        
+        const removeButton = isOwner ? 
+            `<button class="btn-secondary" onclick="removeSongFromPlaylist('${song._id}')">Remove</button>` : '';
+        
         songItem.innerHTML = `
             <div class="recent-info">
                 <h4>${song.title}</h4>
@@ -477,7 +529,7 @@ function displayPlaylistSongs(playlistSongs) {
             </div>
             <div>
                 <button class="play-btn" onclick="playSong('${song._id}', '${song.filePath || ''}')">▶ Play</button>
-                <button class="btn-secondary" onclick="removeSongFromPlaylist('${song._id}')">Remove</button>
+                ${removeButton}
             </div>
         `;
         container.appendChild(songItem);
@@ -493,16 +545,20 @@ function displayAvailableSongs() {
     const container = document.getElementById('availableSongs');
     container.innerHTML = '';
     
+    if (songs.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #666;">No songs available. Add some songs first!</p>';
+        return;
+    }
+    
     songs.forEach(song => {
         const songItem = document.createElement('div');
         songItem.className = 'song-item';
-        songItem.onclick = () => toggleSongSelection(song._id, songItem);
         songItem.innerHTML = `
             <div>
                 <strong>${song.title}</strong><br>
                 <small>by ${song.artist}</small>
             </div>
-            <button onclick="addSongToCurrentPlaylist('${song._id}'); event.stopPropagation();" class="btn-primary">Add</button>
+            <button onclick="addSongToCurrentPlaylist('${song._id}')" class="btn-primary">Add</button>
         `;
         container.appendChild(songItem);
     });
@@ -523,13 +579,15 @@ async function addSongToCurrentPlaylist(songId) {
     
     try {
         const response = await fetch(`${API_BASE}/playlists/${currentPlaylist._id}/songs/${songId}`, {
-            method: 'POST'
+            method: 'POST',
+            headers: getAuthHeaders()
         });
         
         const result = await response.json();
         if (result.success) {
             showMessage('Song added to playlist!', 'success');
-            showPlaylistDetails(currentPlaylist); // Refresh playlist view
+            showPlaylistDetails(currentPlaylist);
+            closeModal('addToPlaylistModal');
         } else {
             showMessage(result.message || 'Failed to add song to playlist');
         }
@@ -543,18 +601,103 @@ async function removeSongFromPlaylist(songId) {
     
     try {
         const response = await fetch(`${API_BASE}/playlists/${currentPlaylist._id}/songs/${songId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         
         const result = await response.json();
         if (result.success) {
             showMessage('Song removed from playlist!', 'success');
-            showPlaylistDetails(currentPlaylist); // Refresh playlist view
+            showPlaylistDetails(currentPlaylist);
         } else {
             showMessage(result.message || 'Failed to remove song from playlist');
         }
     } catch (error) {
         showMessage('Failed to remove song from playlist');
+    }
+}
+
+// Delete song function
+async function deleteSong(songId) {
+    if (!confirm('Are you sure you want to delete this song?')) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/songs/${songId}`, {
+            method: 'DELETE',
+            headers: getAuthHeaders()
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showMessage('Song deleted successfully!', 'success');
+            loadSongs();
+        } else {
+            showMessage(result.message || 'Failed to delete song');
+        }
+    } catch (error) {
+        showMessage('Failed to delete song');
+    }
+}
+
+// Delete playlist function
+async function deletePlaylist(playlistId) {
+    if (!confirm('Are you sure you want to delete this playlist?')) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/playlists/${playlistId}`, {
+            method: 'DELETE',
+            headers: getAuthHeaders()
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showMessage('Playlist deleted successfully!', 'success');
+            loadPlaylists();
+        } else {
+            showMessage(result.message || 'Failed to delete playlist');
+        }
+    } catch (error) {
+        showMessage('Failed to delete playlist');
+    }
+}
+
+// Show edit playlist modal
+function showEditPlaylistModal(id, name, description, isPublic) {
+    document.getElementById('editPlaylistId').value = id;
+    document.getElementById('editPlaylistName').value = name;
+    document.getElementById('editPlaylistDesc').value = description;
+    document.getElementById('editPlaylistPublic').checked = isPublic;
+    document.getElementById('editPlaylistModal').style.display = 'block';
+}
+
+// Update playlist function
+async function updatePlaylist(event) {
+    event.preventDefault();
+    
+    const playlistId = document.getElementById('editPlaylistId').value;
+    const playlistData = {
+        name: document.getElementById('editPlaylistName').value,
+        description: document.getElementById('editPlaylistDesc').value,
+        isPublic: document.getElementById('editPlaylistPublic').checked
+    };
+    
+    try {
+        const response = await fetch(`${API_BASE}/playlists/${playlistId}`, {
+            method: 'PUT',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(playlistData)
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showMessage('Playlist updated successfully!', 'success');
+            closeModal('editPlaylistModal');
+            loadPlaylists();
+        } else {
+            showMessage(result.message || 'Failed to update playlist');
+        }
+    } catch (error) {
+        showMessage('Failed to update playlist');
     }
 }
 

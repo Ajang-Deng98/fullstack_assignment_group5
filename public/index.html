@@ -3,44 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Playlist Manager</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>MusicManager - Your Ultimate Music Companion</title>
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-    <div class="container">
-        <div class="auth-container">
-            <div class="auth-header">
-                <h1>🎵 Music Playlist Manager</h1>
-                <p>Organize your music, create playlists, discover new songs</p>
-                <div class="auth-features">
-                    <span class="feature-tag">✨ Upload Music</span>
-                    <span class="feature-tag">📋 Create Playlists</span>
-                    <span class="feature-tag">🎵 Play Anywhere</span>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">🎵 MusicManager</div>
+            <div class="nav-links">
+                <a href="#mission">Mission</a>
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#testimonials">Reviews</a>
+                <button onclick="showAuthModal('login')" class="nav-cta">Get Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg-animation">
+            <div class="music-note note1">♪</div>
+            <div class="music-note note2">♫</div>
+            <div class="music-note note3">♪</div>
+            <div class="music-note note4">♬</div>
+            <div class="music-note note5">♩</div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Where Music Meets <span class="highlight">Innovation</span></h1>
+                <p class="hero-subtitle">Experience the future of music management with our cutting-edge platform that transforms how you discover, organize, and enjoy your favorite tracks.</p>
+                <div class="hero-buttons">
+                    <button onclick="showAuthModal('register')" class="btn-primary-large">
+                        <span>🚀</span> Start Your Journey
+                    </button>
+                    <button onclick="showAuthModal('login')" class="btn-secondary-large">
+                        <span>🎵</span> Sign In
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Songs Uploaded</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-label">Playlists Created</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">5K+</span>
+                        <span class="stat-label">Music Lovers</span>
+                    </div>
                 </div>
             </div>
-            
-            <div class="auth-tabs">
-                <button class="tab-btn active" onclick="showLogin()">Login</button>
-                <button class="tab-btn" onclick="showRegister()">Register</button>
+            <div class="hero-visual">
+                <div class="music-player-demo">
+                    <div class="player-glow"></div>
+                    <div class="player-header">
+                        <div class="player-controls">
+                            <div class="control-btn">⏮</div>
+                            <div class="control-btn play-btn">▶</div>
+                            <div class="control-btn">⏭</div>
+                        </div>
+                    </div>
+                    <div class="player-info">
+                        <div class="song-title">Bohemian Rhapsody</div>
+                        <div class="song-artist">Queen</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="equalizer">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
+    <!-- Mission Section -->
+    <section id="mission" class="mission">
+        <div class="container">
+            <div class="mission-content">
+                <div class="mission-text">
+                    <h2>Our <span class="highlight-dark">Mission</span></h2>
+                    <p class="mission-statement">"To democratize music management and create a world where every music lover can effortlessly organize, discover, and share their passion for music."</p>
+                    <div class="mission-values">
+                        <div class="value">
+                            <div class="value-icon">🎯</div>
+                            <h4>Innovation First</h4>
+                            <p>Pushing boundaries in music technology</p>
+                        </div>
+                        <div class="value">
+                            <div class="value-icon">🤝</div>
+                            <h4>Community Driven</h4>
+                            <p>Built by music lovers, for music lovers</p>
+                        </div>
+                        <div class="value">
+                            <div class="value-icon">🌟</div>
+                            <h4>Excellence</h4>
+                            <p>Delivering exceptional user experiences</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mission-visual">
+                    <div class="vinyl-record">
+                        <div class="vinyl-center"></div>
+                        <div class="vinyl-grooves"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Everything You Need for Music Management</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎵</div>
+                    <h3>Upload & Play</h3>
+                    <p>Upload your music files and play them directly in your browser with our built-in audio player.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Smart Playlists</h3>
+                    <p>Create unlimited playlists, organize by genre, mood, or any criteria you choose.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Powerful Search</h3>
+                    <p>Find any song instantly by title, artist, album, or genre with our advanced search.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🕒</div>
+                    <h3>Recently Played</h3>
+                    <p>Keep track of your listening history with Redis-powered recently played songs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Share Playlists</h3>
+                    <p>Make your playlists public and share your music taste with the community.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Built with modern technology for instant loading and smooth performance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About <span class="highlight-dark">MusicManager</span></h2>
+                    <p class="about-intro">Born from a passion for music and technology, MusicManager represents the next evolution in digital music management.</p>
+                    
+                    <div class="story">
+                        <h3>Our Story</h3>
+                        <p>Founded in 2024 by a team of music enthusiasts and tech innovators, we recognized the need for a comprehensive solution that bridges the gap between music collection and modern playlist management.</p>
+                    </div>
+                    
+                    <div class="team-stats">
+                        <div class="team-stat">
+                            <span class="stat-number">10+</span>
+                            <span class="stat-label">Team Members</span>
+                        </div>
+                        <div class="team-stat">
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">Years Experience</span>
+                        </div>
+                        <div class="team-stat">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Support</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-visual">
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-avatar">👨‍💻</div>
+                            <h4>Ajang Chol Aguer Deng</h4>
+                            <p>Lead Developer & System Architect</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-avatar">👨‍🔧</div>
+                            <h4>Collins Otieno</h4>
+                            <p>Backend Developer & API Designer</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-avatar">👩‍💻</div>
+                            <h4>Nana Koramah</h4>
+                            <p>Frontend Developer & UX Designer</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-avatar">👩‍📊</div>
+                            <h4>Stella Remember</h4>
+                            <p>Database Designer & Documentation Lead</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2>What Our Community Says</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="testimonial-rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"This platform revolutionized how I manage my music collection. The AI-powered recommendations are spot on!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨‍🎤</div>
+                        <div class="author-info">
+                            <div class="author-name">Alex Johnson</div>
+                            <div class="author-title">Music Producer • Los Angeles</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"The recently played feature and seamless playlist creation make this my go-to music management tool."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👩‍🎨</div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah Chen</div>
+                            <div class="author-title">DJ & Artist • New York</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"Perfect for managing our band's tracks. The collaboration features and audio quality are outstanding!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">🎸</div>
+                        <div class="author-info">
+                            <div class="author-name">Mike Rodriguez</div>
+                            <div class="author-title">Lead Guitarist • Austin</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-bg-animation">
+            <div class="wave wave1"></div>
+            <div class="wave wave2"></div>
+            <div class="wave wave3"></div>
+        </div>
+        <div class="container">
+            <h2>Ready to Transform Your Music Experience?</h2>
+            <p>Join the revolution and discover why thousands of music enthusiasts choose MusicManager for their digital music journey.</p>
+            <div class="cta-buttons">
+                <button onclick="showAuthModal('register')" class="btn-primary-large">
+                    <span>🎯</span> Start Free Today
+                </button>
+            </div>
+            <div class="cta-features">
+                <span class="cta-feature">✅ No Credit Card Required</span>
+                <span class="cta-feature">✅ 30-Day Free Trial</span>
+                <span class="cta-feature">✅ Cancel Anytime</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="auth-close" onclick="closeAuthModal()">&times;</span>
+            
             <!-- Login Form -->
             <div id="loginForm" class="auth-form">
-                <h2>Welcome Back</h2>
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to continue your music journey</p>
+                </div>
                 <form onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <input type="text" id="loginUsername" placeholder="Username" required>
-                    </div>
                     <div class="form-group">
                         <input type="email" id="loginEmail" placeholder="Email" required>
                     </div>
-                    <button type="submit" class="btn-primary">Login</button>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Sign In</button>
                 </form>
+                <div class="auth-switch">
+                    <p>Don't have an account? <a href="#" onclick="switchToRegister()">Sign up</a></p>
+                </div>
             </div>
 
             <!-- Register Form -->
             <div id="registerForm" class="auth-form hidden">
-                <h2>Create Account</h2>
+                <div class="auth-header">
+                    <h2>Join MusicManager</h2>
+                    <p>Create your account and start organizing your music</p>
+                </div>
                 <form onsubmit="handleRegister(event)">
                     <div class="form-group">
                         <input type="text" id="regUsername" placeholder="Username" required>
@@ -48,21 +332,20 @@
                     <div class="form-group">
                         <input type="email" id="regEmail" placeholder="Email" required>
                     </div>
+                    <div class="form-group">
+                        <input type="password" id="regPassword" placeholder="Password (min 6 characters)" required minlength="6">
+                    </div>
                     <button type="submit" class="btn-primary">Create Account</button>
                 </form>
-            </div>
-
-            <div id="message" class="message"></div>
-            
-            <div class="auth-footer">
-                <p>By signing up, you agree to our terms and privacy policy</p>
-                <div class="social-proof">
-                    <span>🎆 Join 1000+ music lovers</span>
+                <div class="auth-switch">
+                    <p>Already have an account? <a href="#" onclick="switchToLogin()">Sign in</a></p>
                 </div>
             </div>
+
+            <div id="authMessage" class="auth-message"></div>
         </div>
     </div>
 
-    <script src="js/auth.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>
