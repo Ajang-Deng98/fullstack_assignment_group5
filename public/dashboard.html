@@ -9,47 +9,83 @@
 <body>
     <div class="dashboard">
         <nav class="navbar">
-            <div class="nav-brand">🎵 Music Manager</div>
+            <div class="nav-brand">
+                <span class="brand-icon">🎵</span>
+                <span class="brand-text">MusicManager</span>
+            </div>
             <div class="nav-user">
-                <span id="userName">Welcome!</span>
-                <button onclick="logout()" class="btn-secondary">Logout</button>
+                <div class="user-info">
+                    <div class="user-avatar">👤</div>
+                    <span id="userName">Welcome!</span>
+                </div>
+                <button onclick="logout()" class="logout-btn">Logout</button>
             </div>
         </nav>
 
         <div class="dashboard-content">
             <div class="sidebar">
-                <div class="menu-item active" onclick="showSection('songs')">🎵 Songs</div>
-                <div class="menu-item" onclick="showSection('playlists')">📋 Playlists</div>
-                <div class="menu-item" onclick="showSection('recent')">🕒 Recently Played</div>
+                <div class="sidebar-header">
+                    <h3>Library</h3>
+                </div>
+                <div class="menu-item active" onclick="showSection('songs')">
+                    <span class="menu-icon">🎵</span>
+                    <span class="menu-text">Songs</span>
+                </div>
+                <div class="menu-item" onclick="showSection('playlists')">
+                    <span class="menu-icon">📋</span>
+                    <span class="menu-text">Playlists</span>
+                </div>
+                <div class="menu-item" onclick="showSection('recent')">
+                    <span class="menu-icon">🕒</span>
+                    <span class="menu-text">Recently Played</span>
+                </div>
             </div>
 
             <div class="main-content">
                 <!-- Songs Section -->
                 <div id="songsSection" class="content-section">
                     <div class="section-header">
-                        <h2>Songs</h2>
-                        <button onclick="showAddSongModal()" class="btn-primary">Add Song</button>
+                        <div class="section-title">
+                            <h2>Your Music Library</h2>
+                            <p class="section-subtitle">Manage and play your favorite tracks</p>
+                        </div>
+                        <button onclick="showAddSongModal()" class="add-btn">
+                            <span class="btn-icon">+</span>
+                            Add Song
+                        </button>
                     </div>
-                    <div class="search-bar">
-                        <input type="text" id="searchInput" placeholder="Search songs..." onkeyup="searchSongs()">
+                    <div class="search-container">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="searchInput" placeholder="Search your music library..." onkeyup="searchSongs()">
+                        </div>
                     </div>
-                    <div id="songsList" class="items-grid"></div>
+                    <div id="songsList" class="songs-grid"></div>
                 </div>
 
                 <!-- Playlists Section -->
                 <div id="playlistsSection" class="content-section hidden">
                     <div class="section-header">
-                        <h2>My Playlists</h2>
-                        <button onclick="showAddPlaylistModal()" class="btn-primary">Create Playlist</button>
+                        <div class="section-title">
+                            <h2>Your Playlists</h2>
+                            <p class="section-subtitle">Organize your music into collections</p>
+                        </div>
+                        <button onclick="showAddPlaylistModal()" class="add-btn">
+                            <span class="btn-icon">+</span>
+                            Create Playlist
+                        </button>
                     </div>
-                    <div id="playlistsList" class="items-grid"></div>
+                    <div id="playlistsList" class="playlists-grid"></div>
                     
                     <!-- Playlist Details -->
                     <div id="playlistDetails" class="playlist-details hidden">
                         <div class="playlist-header">
-                            <button onclick="hidePlaylistDetails()" class="btn-secondary">← Back</button>
+                            <button onclick="hidePlaylistDetails()" class="clear-btn">← Back</button>
                             <h3 id="playlistDetailsTitle"></h3>
-                            <button onclick="showAddToPlaylistModal()" class="btn-primary">Add Songs</button>
+                            <button onclick="showAddToPlaylistModal()" class="add-btn">
+                                <span class="btn-icon">+</span>
+                                Add Songs
+                            </button>
                         </div>
                         <div id="playlistSongs" class="items-list"></div>
                     </div>
@@ -58,10 +94,13 @@
                 <!-- Recently Played Section -->
                 <div id="recentSection" class="content-section hidden">
                     <div class="section-header">
-                        <h2>Recently Played</h2>
-                        <button onclick="clearRecentlyPlayed()" class="btn-secondary">Clear All</button>
+                        <div class="section-title">
+                            <h2>Recently Played</h2>
+                            <p class="section-subtitle">Your listening history</p>
+                        </div>
+                        <button onclick="clearRecentlyPlayed()" class="clear-btn">Clear All</button>
                     </div>
-                    <div id="recentList" class="items-list"></div>
+                    <div id="recentList" class="recent-list"></div>
                 </div>
             </div>
         </div>
@@ -106,6 +145,23 @@
             <span class="close" onclick="closeModal('addToPlaylistModal')">&times;</span>
             <h3>Add Songs to Playlist</h3>
             <div id="availableSongs" class="songs-list"></div>
+        </div>
+    </div>
+
+    <!-- Edit Playlist Modal -->
+    <div id="editPlaylistModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editPlaylistModal')">&times;</span>
+            <h3>Edit Playlist</h3>
+            <form onsubmit="updatePlaylist(event)">
+                <input type="hidden" id="editPlaylistId">
+                <input type="text" id="editPlaylistName" placeholder="Playlist Name" required>
+                <textarea id="editPlaylistDesc" placeholder="Description"></textarea>
+                <label>
+                    <input type="checkbox" id="editPlaylistPublic"> Make Public
+                </label>
+                <button type="submit" class="btn-primary">Update Playlist</button>
+            </form>
         </div>
     </div>
 
