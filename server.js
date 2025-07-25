@@ -6,6 +6,7 @@ const redisService = require('./utils/redisService');
 const ErrorHandler = require('./middleware/errorHandler');
 
 // Import routes
+const authRoutes = require('./routes/authRoutes');
 const songRoutes = require('./routes/songRoutes');
 const playlistRoutes = require('./routes/playlistRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -22,12 +23,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 
-// Serve frontend
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/landing.html');
+// Handle favicon requests
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
+// Serve auth page separately
+app.get('/auth', (req, res) => {
+  res.sendFile(__dirname + '/public/auth.html');
 });
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/songs', songRoutes);
 app.use('/api/playlists', playlistRoutes);
 app.use('/api/users', userRoutes);

@@ -55,6 +55,11 @@ const userSchema = new mongoose.Schema({
     trim: true,
     lowercase: true
   },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6
+  },
   playlists: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Playlist'
