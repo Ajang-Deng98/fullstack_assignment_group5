@@ -222,6 +222,37 @@ class PlaylistController {
     }
   }
 
+  // Get all playlists
+  static async getAllPlaylists(req, res, next) {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
+
+      const playlists = await PlaylistModel.find({})
+        .populate('userId', 'username')
+        .populate('songs', 'title artist')
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 });
+
+      const total = await PlaylistModel.countDocuments({});
+
+      res.json({
+        success: true,
+        data: playlists,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // Get public playlists
   static async getPublicPlaylists(req, res, next) {
     try {
