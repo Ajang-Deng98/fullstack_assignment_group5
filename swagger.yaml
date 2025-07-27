@@ -1,0 +1,565 @@
+openapi: 3.0.0
+info:
+  title: Music Playlist Manager API
+  description: A comprehensive music playlist management system with JWT authentication, file uploads, and Redis caching
+  version: 1.0.0
+  contact:
+    name: Ajang Deng
+    url: https://github.com/Ajang-Deng98/fullstack_assignment_group5
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Song:
+      type: object
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+        artist:
+          type: string
+        album:
+          type: string
+        duration:
+          type: number
+        genre:
+          type: string
+        filePath:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    Playlist:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        userId:
+          type: string
+        songs:
+          type: array
+          items:
+            type: string
+        isPublic:
+          type: boolean
+        playlistType:
+          type: string
+          enum: [regular, smart]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        playlists:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        201:
+          description: User registered successfully
+        400:
+          description: Bad request
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Login successful
+        400:
+          description: Invalid credentials
+
+  /songs:
+    post:
+      tags:
+        - Songs
+      summary: Create a new song
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                artist:
+                  type: string
+                album:
+                  type: string
+                duration:
+                  type: number
+                genre:
+                  type: string
+                audioFile:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          description: Song created successfully
+        401:
+          description: Unauthorized
+
+    get:
+      tags:
+        - Songs
+      summary: Get all songs
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Songs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Song'
+                  pagination:
+                    type: object
+
+  /songs/search:
+    get:
+      tags:
+        - Songs
+      summary: Search songs
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Search results
+        400:
+          description: Query parameter required
+
+  /songs/{id}:
+    get:
+      tags:
+        - Songs
+      summary: Get song by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Song found
+        404:
+          description: Song not found
+
+    put:
+      tags:
+        - Songs
+      summary: Update song
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                artist:
+                  type: string
+                album:
+                  type: string
+                duration:
+                  type: number
+                genre:
+                  type: string
+      responses:
+        200:
+          description: Song updated successfully
+        401:
+          description: Unauthorized
+        404:
+          description: Song not found
+
+    delete:
+      tags:
+        - Songs
+      summary: Delete song
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Song deleted successfully
+        401:
+          description: Unauthorized
+        404:
+          description: Song not found
+
+  /songs/{id}/play:
+    post:
+      tags:
+        - Songs
+      summary: Play song (add to recently played)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+      responses:
+        200:
+          description: Song played successfully
+        401:
+          description: Unauthorized
+        404:
+          description: Song not found
+
+  /playlists:
+    post:
+      tags:
+        - Playlists
+      summary: Create a new playlist
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                userId:
+                  type: string
+                isPublic:
+                  type: boolean
+      responses:
+        201:
+          description: Playlist created successfully
+        401:
+          description: Unauthorized
+
+    get:
+      tags:
+        - Playlists
+      summary: Get all playlists
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Playlists retrieved successfully
+
+  /playlists/public:
+    get:
+      tags:
+        - Playlists
+      summary: Get public playlists
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Public playlists retrieved successfully
+
+  /playlists/user/{userId}:
+    get:
+      tags:
+        - Playlists
+      summary: Get user's playlists
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: User playlists retrieved successfully
+        404:
+          description: User not found
+
+  /playlists/{id}:
+    get:
+      tags:
+        - Playlists
+      summary: Get playlist by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Playlist found
+        404:
+          description: Playlist not found
+
+    put:
+      tags:
+        - Playlists
+      summary: Update playlist
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                isPublic:
+                  type: boolean
+      responses:
+        200:
+          description: Playlist updated successfully
+        401:
+          description: Unauthorized
+        404:
+          description: Playlist not found
+
+    delete:
+      tags:
+        - Playlists
+      summary: Delete playlist
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Playlist deleted successfully
+        401:
+          description: Unauthorized
+        404:
+          description: Playlist not found
+
+  /playlists/{playlistId}/songs/{songId}:
+    post:
+      tags:
+        - Playlists
+      summary: Add song to playlist
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: playlistId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: songId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Song added to playlist successfully
+        401:
+          description: Unauthorized
+        404:
+          description: Playlist or song not found
+
+    delete:
+      tags:
+        - Playlists
+      summary: Remove song from playlist
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: playlistId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: songId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Song removed from playlist successfully
+        401:
+          description: Unauthorized
+        404:
+          description: Playlist or song not found
+
+  /users/{userId}/recently-played:
+    get:
+      tags:
+        - Users
+      summary: Get recently played songs
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Recently played songs retrieved successfully
+        404:
+          description: User not found
+
+    delete:
+      tags:
+        - Users
+      summary: Clear recently played songs
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Recently played cleared successfully
+        404:
+          description: User not found
