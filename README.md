@@ -2,7 +2,9 @@
 
 A comprehensive, full-stack music playlist management system built with modern web technologies. Upload your music, create playlists, and enjoy seamless audio playback with a beautiful, responsive interface.
 
-## Live Demo
+## LINK TO THE VIDEO AND DOCUMENTATION
+https://youtu.be/yj_IzXHWjsg
+
 
 API Documentation: http://localhost:3000/api/docs
 
