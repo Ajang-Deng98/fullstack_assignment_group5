@@ -1,5 +1,11 @@
 # Music Playlist Manager
 
+![License](https://img.shields.io/github/license/Ajang-Deng98/fullstack_assignment_group5)
+![Node](https://img.shields.io/badge/Node.js-18+-brightgreen)
+![MongoDB](https://img.shields.io/badge/MongoDB-Running-green)
+![Redis](https://img.shields.io/badge/Redis-Required-red)
+
+
 A comprehensive, full-stack music playlist management system built with modern web technologies. Upload your music, create playlists, and enjoy seamless audio playback with a beautiful, responsive interface.
 
 ## LINK TO THE VIDEO AND DOCUMENTATION
@@ -7,11 +13,6 @@ https://youtu.be/yj_IzXHWjsg
 
 
 API Documentation: http://localhost:3000/api/docs
-
-![License](https://img.shields.io/github/license/Ajang-Deng98/fullstack_assignment_group5)
-![Node](https://img.shields.io/badge/Node.js-18+-brightgreen)
-![MongoDB](https://img.shields.io/badge/MongoDB-Running-green)
-![Redis](https://img.shields.io/badge/Redis-Required-red)
 
 ## Features
 
