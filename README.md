@@ -117,6 +117,7 @@ npm start
 
 ### Playlists
 - `POST /api/playlists` - Create a new playlist
+- `GET /api/playlists` - Get all playlists (paginated)
 - `GET /api/playlists/public` - Get public playlists
 - `GET /api/playlists/user/:userId` - Get user's playlists
 - `GET /api/playlists/:id` - Get playlist by ID
@@ -320,8 +321,14 @@ class SmartPlaylist extends BasePlaylist {}
 
 ### Playlists
 - `POST /api/playlists` - Create playlist
+- `GET /api/playlists` - Get all playlists (paginated)
+- `GET /api/playlists/public` - Get public playlists
 - `GET /api/playlists/user/:userId` - Get user playlists
+- `GET /api/playlists/:id` - Get playlist by ID
+- `PUT /api/playlists/:id` - Update playlist
+- `DELETE /api/playlists/:id` - Delete playlist
 - `POST /api/playlists/:playlistId/songs/:songId` - Add song to playlist
+- `DELETE /api/playlists/:playlistId/songs/:songId` - Remove song from playlist
 
 ### Users
 - `POST /api/users` - Create user
