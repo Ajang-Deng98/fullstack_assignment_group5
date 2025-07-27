@@ -1,51 +1,35 @@
-# 🎵 Music Playlist Manager
-
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-green.svg)](https://www.mongodb.com/)
-[![Redis](https://img.shields.io/badge/Redis-7.0+-red.svg)](https://redis.io/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+# Music Playlist Manager
 
 A comprehensive, full-stack music playlist management system built with modern web technologies. Upload your music, create playlists, and enjoy seamless audio playback with a beautiful, responsive interface.
 
-## 🌟 Live Demo
+## Live Demo
 
-[View Live Demo](https://your-demo-link.com) | [API Documentation](http://localhost:3000/api/docs)
+API Documentation: http://localhost:3000/api/docs
 
-## 📸 Screenshots
+## Features
 
-### Landing Page
-![Landing Page](https://via.placeholder.com/800x400/667eea/ffffff?text=Modern+Landing+Page)
-
-### Dashboard
-![Dashboard](https://via.placeholder.com/800x400/764ba2/ffffff?text=Music+Dashboard)
-
-### Audio Player
-![Audio Player](https://via.placeholder.com/800x400/28a745/ffffff?text=Built-in+Audio+Player)
-
-## ✨ Features
-
-### 🎵 Core Functionality
+### Core Functionality
 - **Audio Upload & Playback**: Upload MP3, WAV, M4A, OGG, FLAC files with built-in HTML5 player
 - **Smart Playlist Management**: Create unlimited playlists with drag-and-drop organization
 - **Advanced Search**: Real-time search by title, artist, album, or genre
 - **Recently Played**: Redis-powered listening history with timestamps
 - **User Profiles**: Secure user management with session handling
 
-### 🎨 Modern Frontend
+### Modern Frontend
 - **Responsive Design**: Mobile-first approach with smooth animations
 - **Professional Landing Page**: Hero section, features, testimonials, and CTAs
 - **Interactive Dashboard**: Real-time updates with smooth transitions
 - **Audio Player**: Fixed bottom player with progress tracking
 - **Glassmorphism UI**: Modern design with blur effects and gradients
 
-### 🏗️ Technical Excellence
+### Technical Excellence
 - **Object-Oriented Programming**: Full implementation of OOP principles
 - **RESTful API**: Complete CRUD operations with proper HTTP status codes
 - **Redis Caching**: High-performance caching and session management
 - **File Upload**: Secure file handling with validation and storage
 - **Error Handling**: Comprehensive error management and user feedback
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 - **Runtime**: Node.js 18+
@@ -69,7 +53,7 @@ A comprehensive, full-stack music playlist management system built with modern w
 - MongoDB (running on localhost:27017)
 - Redis (running on localhost:6379)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js 18+ installed
@@ -150,7 +134,7 @@ npm start
 - `GET /api/users/:userId/recently-played` - Get recently played songs
 - `DELETE /api/users/:userId/recently-played` - Clear recently played songs
 
-## 🧪 Testing
+## Testing
 
 ### Postman Collection
 1. Import `postman_collection.json` into Postman
@@ -255,7 +239,7 @@ Run tests:
 npm test
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 fullstack_assignment_group5/
@@ -287,7 +271,7 @@ fullstack_assignment_group5/
 └── server.js              # Main server file
 ```
 
-## 🎯 OOP Implementation
+## OOP Implementation
 
 ### Encapsulation
 - Private properties and methods in classes
@@ -318,7 +302,7 @@ class SmartPlaylist extends BasePlaylist {}
 - Abstract BasePlaylist class
 - Hidden implementation details
 
-## 🔧 API Endpoints
+## API Endpoints
 
 ### Songs
 - `POST /api/songs` - Upload song with audio file
@@ -335,7 +319,7 @@ class SmartPlaylist extends BasePlaylist {}
 - `POST /api/users` - Create user
 - `GET /api/users/:userId/recently-played` - Get recently played
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -343,16 +327,16 @@ class SmartPlaylist extends BasePlaylist {}
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
+## Author
 
-**Ajang Deng**
+Ajang Deng
 - GitHub: [@Ajang-Deng98](https://github.com/Ajang-Deng98)
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with modern web technologies
 - Inspired by popular music streaming platforms
@@ -360,4 +344,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-⭐ **Star this repository if you found it helpful!**
+Star this repository if you found it helpful!
