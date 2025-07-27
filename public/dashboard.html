@@ -43,7 +43,19 @@
 
             <div class="main-content">
                 <!-- Songs Section -->
+                <div id="dashboardHeader" class="dashboard-header">
+                    <h1>Music Dashboard</h1>
+                    <p>Manage your music library, create playlists, and enjoy your favorite tracks.</p>
                 <div id="songsSection" class="content-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h2>Welcome to Your Music Dashboard</h2>
+                            <p class="section-subtitle">Explore, manage, and enjoy your music collection</p>
+                        </div>
+                        <button onclick="showAddSongModal()" class="add-btn">
+                            <span class="btn-icon">+</span>
+                            Add Song
+                        </button>
                     <div class="section-header">
                         <div class="section-title">
                             <h2>Your Music Library</h2>
@@ -55,6 +67,7 @@
                         </button>
                     </div>
                     <div class="search-container">
+                        <span class="search-label">Search:</span>
                         <div class="search-box">
                             <span class="search-icon">🔍</span>
                             <input type="text" id="searchInput" placeholder="Search your music library..." onkeyup="searchSongs()">
@@ -68,7 +81,7 @@
                     <div class="section-header">
                         <div class="section-title">
                             <h2>Your Playlists</h2>
-                            <p class="section-subtitle">Organize your music into collections</p>
+                            <p class="section-subtitle">Organize your music into collections</p>                    
                         </div>
                         <button onclick="showAddPlaylistModal()" class="add-btn">
                             <span class="btn-icon">+</span>
@@ -82,6 +95,7 @@
                         <div class="playlist-header">
                             <button onclick="hidePlaylistDetails()" class="clear-btn">← Back</button>
                             <h3 id="playlistDetailsTitle"></h3>
+                            <p id="playlistDetailsDesc"></p>
                             <button onclick="showAddToPlaylistModal()" class="add-btn">
                                 <span class="btn-icon">+</span>
                                 Add Songs
@@ -96,7 +110,9 @@
                     <div class="section-header">
                         <div class="section-title">
                             <h2>Recently Played</h2>
+                            <p class="section-subtitle">Quick access to your recently played tracks</p>
                             <p class="section-subtitle">Your listening history</p>
+
                         </div>
                         <button onclick="clearRecentlyPlayed()" class="clear-btn">Clear All</button>
                     </div>

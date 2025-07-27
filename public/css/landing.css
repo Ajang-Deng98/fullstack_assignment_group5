@@ -195,6 +195,7 @@ body {
 
 .hero-stats {
     display: flex;
+    justify-content: center;
     gap: 40px;
 }
 
@@ -219,6 +220,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    margin-top: 60px;
 }
 
 .music-player-demo {
@@ -463,6 +466,7 @@ body {
 .about {
     padding: 100px 0;
     background: #f8f9fa;
+    position: relative;
 }
 
 .about-content {

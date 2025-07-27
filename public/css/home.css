@@ -12,6 +12,8 @@ body {
 }
 
 @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }    
     from { opacity: 0; }
     to { opacity: 1; }
 }
@@ -46,6 +48,8 @@ body {
 
 .nav-logo {
     font-size: 1.5rem;
+    font-family: 'Segoe UI', sans-serif;
+    text-decoration: none;
     font-weight: bold;
     color: #667eea;
 }
