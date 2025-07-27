@@ -8,6 +8,15 @@ https://youtu.be/yj_IzXHWjsg
 
 API Documentation: http://localhost:3000/api/docs
 
+## 📸 Screenshots
+
+### 🎧 Dashboard View
+![Dashboard](screenshots/dashboard.png)
+
+### 📂 Playlist Manager
+![Playlist](screenshots/playlist.png)
+
+
 ## Features
 
 ### Core Functionality
@@ -348,10 +357,13 @@ class SmartPlaylist extends BasePlaylist {}
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Author
+## 👥 Team Members
 
-Ajang Deng
-- GitHub: [@Ajang-Deng98](https://github.com/Ajang-Deng98)
+- Ajang Chol Aguer Deng — Lead Developer & System Architect  
+- Collins Otieno — Backend Developer  
+- Nana Koramah — Frontend Developer  
+- Stella Remember — Database & Documentation Lead
+
 
 ## Acknowledgments
 
