@@ -156,6 +156,10 @@ npm start
 
 ### Unit Tests
 ```bash
+# Run working tests
+npx jest tests/simple.test.js
+
+# Run all tests (some may require database setup)
 npm test
 ```
 
@@ -236,6 +240,10 @@ npm test
 
 Run tests:
 ```bash
+# Working tests (9 passing tests)
+npx jest tests/simple.test.js
+
+# All tests
 npm test
 ```
 
