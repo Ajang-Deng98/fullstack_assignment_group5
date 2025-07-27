@@ -8,14 +8,10 @@ https://youtu.be/yj_IzXHWjsg
 
 API Documentation: http://localhost:3000/api/docs
 
-## 📸 Screenshots
-
-### 🎧 Dashboard View
-![Dashboard](screenshots/dashboard.png)
-
-### 📂 Playlist Manager
-![Playlist](screenshots/playlist.png)
-
+![License](https://img.shields.io/github/license/Ajang-Deng98/fullstack_assignment_group5)
+![Node](https://img.shields.io/badge/Node.js-18+-brightgreen)
+![MongoDB](https://img.shields.io/badge/MongoDB-Running-green)
+![Redis](https://img.shields.io/badge/Redis-Required-red)
 
 ## Features
 
